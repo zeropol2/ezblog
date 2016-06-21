@@ -1,6 +1,7 @@
+{% load markdown_filter %}
 <h3><a href="{% url 'blog:posts' pk=post.pk %}">{{ post.title }}</a></h3>
 
-<div>{{ post.content }}</div>
+<div>{{ post.content|render_markdown|safe }}</div>
 
 <p>{{ post.created_at }}</p>
 
