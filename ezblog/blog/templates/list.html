@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+
+{% block page_title %} {{ post.title }} 게시물 목록 {% endblock %}
+{% block body %}
+    {% for item in posts %}
+        {% include 'part_detail.html' with post=item %}
+        {% empty %}
+        <p>
+            게시물이 없습니다.
+        </p>
+    {% endfor %}
+
+    {% bootstrap_pagination posts %}
+
+    {% comment %}
+    {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}">이전 쪽</a>
+    {% endif %}
+
+    {{ posts.number }} / {{ posts.paginator.num_pages }}
+
+    {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}">다음 쪽</a>
+    {% endif %}
+    {% endcomment %}
+
+{% endblock %}

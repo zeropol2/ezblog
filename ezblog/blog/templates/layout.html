@@ -1,0 +1,20 @@
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>{% block page_title %}내 블로그{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+
+<body class="container">
+
+    {% block body %}
+    {% endblock %}
+
+</body>
+
+</html>
