@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Post(models.Model):
-    status = (
+    __status_choices = (
         ('public', '공개',),
         ('private', '비공개',),
     )
@@ -10,7 +10,7 @@ class Post(models.Model):
     content = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-    status = models.CharField(max_length=20, choices=status, default='public', null=False, blank=False)
+    status = models.CharField(max_length=20, choices=__status_choices, default='public', null=False, blank=False)
     category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField('Tag', blank=True)
 
@@ -19,6 +19,9 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-created_at', '-pk']
+
+    def get_status_choices(self):
+        return self.__status_choices
 
 
 class Category(models.Model):

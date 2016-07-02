@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block page_title %} {{ post.title }} 게시물 편집 {% endblock %}
+{% block body %}
+    <form method="POST" action="{% url 'blog:create_post' %}">
+        {% csrf_token %}
+        <p>
+            <div class="form-group">
+                <input class="form-control" name="title" type="text" placeholder="글 제목" />
+            </div>
+        </p>
+
+        <hr />
+
+        <p>
+            <textarea name="content" data-provide="markdown" rows="10" placeholder="마크다운으로 작성해주세요."></textarea>
+        </p>
+
+        <hr />
+
+        <p>
+            <select class="form-control" name="category">
+                <option value>카테고리 없음</option>
+                {% for category in categories %}
+                <option value="{{ category.pk }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+
+            <hr />
+
+            <select class="form-control" name="status">
+                {% for item in status_choices %}
+                <option value="{{ item.0 }}">{{ item.1 }}</option>
+                {% endfor %}
+            </select>
+        </p>
+
+        <hr />
+
+        <p>
+            <div class="text-right">
+                <button type="submit" class="btn">저장</button>
+            </div>
+        </p>
+    </form>
+{% endblock %}
