@@ -31,12 +31,12 @@ def index(request):
 def posts(request, pk):
     if request.method == 'GET':
         return __get_post(request, pk)
-    elif request.method == 'POST':
-        raise Http404
     elif request.method == 'PUT':
         pass
     elif request.method == 'DELETE':
         pass
+    else:
+        raise Http404
 
     url = reverse('blog:index')
     return redirect(url)
