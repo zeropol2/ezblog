@@ -63,9 +63,7 @@ def __delete_post(request, pk):
 
 # create_post
 def create_post(request):
-    if request.method == 'GET':
-        return __create_form(request)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         return __create_post(request)
     else:
         raise Http404
@@ -100,6 +98,14 @@ def __create_post(request):
 
     url = reverse('blog:posts', kwargs={'pk': new_post.pk})
     return redirect(url)
+
+
+# create_form
+def create_form(request):
+    if request.method == 'GET':
+        return __create_form(request)
+    else:
+        raise Http404
 
 
 def __create_form(request):
