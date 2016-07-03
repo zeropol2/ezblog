@@ -9,8 +9,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/to-markdown/3.0.0/to-markdown.min.js"></script>
 
-    <link href="{% static 'css/parsley-2.4.3.css' %}" rel="stylesheet">
-    <script src="{% static 'js/parsley-2.4.3.min.js' %}"></script>
+    <!--parsley 2.4.3-->
+    <link href="{% static 'css/parsley.css' %}" rel="stylesheet">
+    <script src="{% static 'js/parsley.min.js' %}"></script>
     <script type="text/javascript">
         $(function () {
           $('#edit_form').parsley().on('field:validated', function() {
