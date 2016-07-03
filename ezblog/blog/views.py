@@ -11,7 +11,10 @@ def index(request):
     per_page = 2
     page = request.GET.get('page', 1)
 
-    pg = Paginator(Post.objects.all(), per_page)
+    if request.user.is_authenticated():
+        pg = Paginator(Post.objects.all(), per_page)
+    else:
+        pg = Paginator(Post.objects.filter(status='public'), per_page)
 
     try:
         contents = pg.page(page)

@@ -23,6 +23,9 @@ class Post(models.Model):
     def get_status_choices(self):
         return self.__status_choices
 
+    def is_public_status(self):
+        return self.status == 'public'
+
 
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=30, null=False, blank=False)
