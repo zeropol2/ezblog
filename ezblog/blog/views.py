@@ -74,7 +74,9 @@ def __create_post(request):
     content = request.POST.get('content')
     category_pk = request.POST.get('category')
     status = request.POST.get('status')
-    tags = request.POST.get('tags').split(',')
+    tags = request.POST.get('tags')
+    if tags:
+        tags = request.POST.get('tags').split(',')
 
     new_post = Post()
     new_post.title = title
@@ -86,14 +88,14 @@ def __create_post(request):
     if tags:
         for name in tags:
             name = name.strip()
-            print(name)
-            try:
-                tag = Tag.objects.get(name=name)
-            except Tag.DoesNotExist:
-                tag = Tag()
-                tag.name = name
-                tag.save()
-            new_post.tags.add(tag)
+            if name:
+                try:
+                    tag = Tag.objects.get(name=name)
+                except Tag.DoesNotExist:
+                    tag = Tag()
+                    tag.name = name
+                    tag.save()
+                new_post.tags.add(tag)
         new_post.save()
 
     url = reverse('blog:posts', kwargs={'pk': new_post.pk})
