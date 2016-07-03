@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Post, Category, Tag
@@ -35,14 +35,12 @@ def posts(request, pk):
     if request.method == 'GET':
         return __get_post(request, pk)
     elif request.method == 'PUT':
-        pass
+        url = reverse('blog:index')
+        return redirect(url)
     elif request.method == 'DELETE':
-        pass
+        return __delete_post(request, pk)
     else:
         raise Http404
-
-    url = reverse('blog:index')
-    return redirect(url)
 
 
 def __get_post(request, pk):
@@ -53,6 +51,14 @@ def __get_post(request, pk):
     }
 
     return render(request, 'detail.html', ctx)
+
+
+def __delete_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    response = HttpResponse()
+    response.status_code = 200
+    return response
 
 
 # create_post

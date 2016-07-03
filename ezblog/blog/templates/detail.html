@@ -1,7 +1,72 @@
 {% extends 'layout.html' %}
 {% block page_title %} {{ post.title }} - 게시물 보기 {% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function() {
+            $('#delete').on('click', function(e) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{% url 'blog:posts' pk=post.pk %}",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                    },
+                    success: function() {
+                        location.href='{% url 'blog:index' %}';
+                    }
+                });
+            });
+        });
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+{% endblock %}
+
 {% block body %}
     {% include 'part_detail.html' %}
-    <p><a href="{% url 'blog:index' %}">글 목록</a> </p>
+    <p>
+        <div>
+            {% if request.user.is_authenticated %}
+                <button class="btn btn-danger" data-toggle="modal" data-target="#delete_comfirm_modal">글 삭제</button>
+            {% endif %}
+            <a href="{% url 'blog:index' %}" class="btn btn-default">글 목록</a>
+        </div>
+    </p>
+
+
+    <!-- Modal -->
+    <div id="delete_comfirm_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">정말로 삭제하시겠습니까?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ post.title }} 이(가) 삭제됩니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="delete" class="btn btn-danger" data-dismiss="modal">삭제</button>
+                </div>
+            </div>
+
+        <v>
+    </div>
 {% endblock %}
 
