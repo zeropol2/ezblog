@@ -1,12 +1,24 @@
 {% load markdown_filter %}
+
 <h3>
-    {% if request.user.is_authenticated and not post.is_public_status %}
-        <code>{{ post.get_status_display }}</code>
-    {% endif %}
     <a href="{% url 'blog:posts' pk=post.pk %}">{{ post.title }}</a>
 </h3>
 
-<div>{{ post.content|render_markdown|safe }}</div>
+<div>
+    {{ post.created_at }}
+    {% if request.user.is_authenticated and not post.is_public_status %}
+        <span class="label label-primary">{{ post.get_status_display }}</span>
+    {% endif %}
+</div>
 
-<p>{{ post.created_at }}</p>
+<p>{{ post.content|render_markdown|safe }}</p>
 
+<p>
+    <div>
+        {% for tag in post.tags.all %}
+            <span class="badge">{{ tag.name }}</span>
+        {% endfor %}
+    </div>
+</p>
+
+<hr />
