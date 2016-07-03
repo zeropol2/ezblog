@@ -46,9 +46,17 @@
                 <option value="{{ category.pk }}">{{ category.name }}</option>
                 {% endfor %}
             </select>
+        </p>
 
-            <hr />
+        <hr />
 
+        <p>
+            <input class="form-control" name="tags" type="text" placeholder="태그는 ,으로 구분해 주세요."/>
+        </p>
+
+        <hr />
+
+        <p>
             <select class="form-control" name="status">
                 {% for item in status_choices %}
                 <option value="{{ item.0 }}">{{ item.1 }}</option>
