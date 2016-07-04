@@ -27,7 +27,7 @@ def index(request):
         'posts': contents,
     }
 
-    return render(request, 'list.html', ctx)
+    return render(request, 'index.html', ctx)
 
 
 # posts
@@ -49,7 +49,7 @@ def __get_post(request, pk):
         'post': post,
     }
 
-    return render(request, 'detail.html', ctx)
+    return render(request, 'detail_post.html', ctx)
 
 
 def __update_post(request, pk):
@@ -135,15 +135,15 @@ def __create_post(request):
     return redirect(url)
 
 
-# create_form
-def create_form(request):
+# create_post_form
+def create_post_form(request):
     if request.method == 'GET':
-        return __create_form(request)
+        return __create_post_form(request)
     else:
         raise Http404
 
 
-def __create_form(request):
+def __create_post_form(request):
     categories = Category.objects.all()
     post = Post()
     status_choices = post.get_status_choices()
@@ -152,18 +152,18 @@ def __create_form(request):
         'status_choices': status_choices,
     }
 
-    return render(request, 'create.html', ctx)
+    return render(request, 'create_post.html', ctx)
 
 
-# update_form
-def update_form(request, pk):
+# update_post_form
+def update_post_form(request, pk):
     if request.method == 'GET':
-        return __update_form(request, pk)
+        return __update_post_form(request, pk)
     else:
         raise Http404
 
 
-def __update_form(request, pk):
+def __update_post_form(request, pk):
     categories = Category.objects.all()
     post = Post.objects.get(pk=pk)
     status_choices = post.get_status_choices()
@@ -173,4 +173,4 @@ def __update_form(request, pk):
         'status_choices': status_choices,
     }
 
-    return render(request, 'update.html', ctx)
+    return render(request, 'update_post.html', ctx)

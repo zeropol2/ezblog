@@ -4,7 +4,7 @@
 {% block page_title %} {{ post.title }} 게시물 목록 {% endblock %}
 {% block body %}
     {% for item in posts %}
-        {% include 'part_detail.html' with post=item %}
+        {% include 'part_detail_post.html' with post=item %}
         {% empty %}
         <p>
             게시물이 없습니다.
@@ -26,6 +26,6 @@
     {% endcomment %}
 
     <p>
-        <a href="{% url 'blog:create_form' %}">새 글 쓰기</a>
+        <a href="{% url 'blog:create_post_form' %}">새 글 쓰기</a>
     </p>
 {% endblock %}

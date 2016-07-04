@@ -23,12 +23,12 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'part_detail.html' %}
+    {% include 'part_detail_post.html' %}
     <p>
         <div>
             {% if request.user.is_authenticated %}
                 <button class="btn btn-danger" data-toggle="modal" data-target="#delete_comfirm_modal">글 삭제</button>
-                <a href="{% url 'blog:update_form' pk=post.pk %}" class="btn btn-success">글 수정</a>
+                <a href="{% url 'blog:update_post_form' pk=post.pk %}" class="btn btn-success">글 수정</a>
             {% endif %}
             <a href="{% url 'blog:index' %}" class="btn btn-default">글 목록</a>
         </div>
