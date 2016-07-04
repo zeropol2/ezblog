@@ -4,22 +4,7 @@
 
 {% block javascript %}
     <script src="{% static 'js/ezblog.js' %}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#delete').on('click', function(e) {
-                $.ajax({
-                    type: "DELETE",
-                    url: "{% url 'blog:posts' pk=post.pk %}",
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-                    },
-                    success: function() {
-                        location.href='{% url 'blog:index' %}';
-                    }
-                });
-            });
-        });
-    </script>
+
 {% endblock %}
 
 {% block body %}
@@ -27,7 +12,8 @@
     <p>
         <div>
             {% if request.user.is_authenticated %}
-                <button class="btn btn-danger" data-toggle="modal" data-target="#delete_comfirm_modal">글 삭제</button>
+                <a href="{% url 'blog:posts' pk=post.pk %}" data-next-to="{% url 'blog:index' %}"
+                   data-target="#delete-comfirm-modal" class="delete-post btn btn-danger">글 삭제</a>
                 <a href="{% url 'blog:update_post_form' pk=post.pk %}" class="btn btn-success">글 수정</a>
             {% endif %}
             <a href="{% url 'blog:index' %}" class="btn btn-default">글 목록</a>
@@ -36,24 +22,23 @@
 
 
     <!-- Modal -->
-    <div id="delete_comfirm_modal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-sm">
-
-            <!-- Modal content-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="delete-comfirm-modal">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">정말로 삭제하시겠습니까?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">정말로 삭제하시겠습니까</h4>
                 </div>
                 <div class="modal-body">
                     <p>{{ post.title }} 이(가) 삭제됩니다.</p>
                 </div>
                 <div class="modal-footer">
-                    <button id="delete" class="btn btn-danger" data-dismiss="modal">삭제</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn-modal-submit btn btn-danger">확인</button>
                 </div>
-            </div>
-
-        <v>
-    </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 {% endblock %}
 

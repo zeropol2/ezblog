@@ -1,52 +1,12 @@
-{% extends 'layout.html' %}
-{% load static from staticfiles %}
-{% block page_title %} {{ post.title }} 게시물 편집 {% endblock %}
-
-{% block javascript %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/to-markdown/3.0.0/to-markdown.min.js"></script>
-
-    <!--parsley 2.4.3-->
-    <link href="{% static 'css/parsley.css' %}" rel="stylesheet">
-    <script src="{% static 'js/parsley.min.js' %}"></script>
-    <script src="{% static 'js/ezblog.js' %}"></script>
-    <script type="text/javascript">
-        $(function () {
-          $('#edit_form').parsley().on('field:validated', function() {
-            var ok = $('.parsley-error').length === 0;
-            $('.bs-callout-info').toggleClass('hidden', !ok);
-            $('.bs-callout-warning').toggleClass('hidden', ok);
-          })
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#update').on('click', function(e) {
-                $.ajax({
-                    type: "PUT",
-                    url: "{% url 'blog:posts' pk=post.pk %}",
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-                    },
-                    data : $('#edit_form').serialize(),
-                    success: function() {
-                        location.href='{% url 'blog:index' %}';
-                    }
-                });
-            });
-        });
-    </script>
-{% endblock %}
+{% extends 'edit_post.html' %}
 
 {% block body %}
-    <form id="edit_form">
+    <form id="edit-post-form">
         <p>
             {% include 'edit_form.html' %}
             <div class="text-right">
-                <button id="update" class="btn">저장</button>
+                <a href="{% url 'blog:posts' pk=post.pk %}" class="update-post btn btn-primary"
+                    data-next-to="{% url 'blog:posts' pk=post.pk %}">저장</a>
             </div>
         </p>
     </form>
