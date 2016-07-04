@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% load static from staticfiles %}
+{% block page_title %} {{ post.title }} 게시물 편집 {% endblock %}
+
+{% block javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/to-markdown/3.0.0/to-markdown.min.js"></script>
+
+    <!--parsley 2.4.3-->
+    <link href="{% static 'css/parsley.css' %}" rel="stylesheet">
+    <script src="{% static 'js/parsley.min.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+          $('#edit_form').parsley().on('field:validated', function() {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-info').toggleClass('hidden', !ok);
+            $('.bs-callout-warning').toggleClass('hidden', ok);
+          })
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <form id="edit_form" method="POST" action="{% url 'blog:create_post' %}">
+        {% csrf_token %}
+        <p>
+            {% include 'edit_form.html' %}
+            <div class="text-right">
+                <button type="submit" class="btn">저장</button>
+            </div>
+        </p>
+    </form>
+{% endblock %}

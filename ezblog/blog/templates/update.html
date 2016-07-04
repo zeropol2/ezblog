@@ -12,6 +12,7 @@
     <!--parsley 2.4.3-->
     <link href="{% static 'css/parsley.css' %}" rel="stylesheet">
     <script src="{% static 'js/parsley.min.js' %}"></script>
+    <script src="{% static 'js/ezblog.js' %}"></script>
     <script type="text/javascript">
         $(function () {
           $('#edit_form').parsley().on('field:validated', function() {
@@ -21,55 +22,31 @@
           })
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#update').on('click', function(e) {
+                $.ajax({
+                    type: "PUT",
+                    url: "{% url 'blog:posts' pk=post.pk %}",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                    },
+                    data : $('#edit_form').serialize(),
+                    success: function() {
+                        location.href='{% url 'blog:index' %}';
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
-    <form id="edit_form" method="POST" action="{% url 'blog:create_post' %}">
-        {% csrf_token %}
+    <form id="edit_form">
         <p>
-            <div class="form-group">
-                <input class="form-control" name="title" type="text" placeholder="글 제목" required=""/>
-            </div>
-        </p>
-
-        <hr />
-
-        <p>
-            <textarea name="content" data-provide="markdown" rows="10" placeholder="마크다운으로 작성해주세요."></textarea>
-        </p>
-
-        <hr />
-
-        <p>
-            <select class="form-control" name="category">
-                <option value>카테고리 없음</option>
-                {% for category in categories %}
-                <option value="{{ category.pk }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
-        </p>
-
-        <hr />
-
-        <p>
-            <input class="form-control" name="tags" type="text" placeholder="태그는 ,으로 구분해 주세요."/>
-        </p>
-
-        <hr />
-
-        <p>
-            <select class="form-control" name="status">
-                {% for item in status_choices %}
-                <option value="{{ item.0 }}">{{ item.1 }}</option>
-                {% endfor %}
-            </select>
-        </p>
-
-        <hr />
-
-        <p>
+            {% include 'edit_form.html' %}
             <div class="text-right">
-                <button type="submit" class="btn">저장</button>
+                <button id="update" class="btn">저장</button>
             </div>
         </p>
     </form>

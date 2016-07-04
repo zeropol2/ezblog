@@ -35,8 +35,7 @@ def posts(request, pk):
     if request.method == 'GET':
         return __get_post(request, pk)
     elif request.method == 'PUT':
-        url = reverse('blog:index')
-        return redirect(url)
+        return __update_post(request, pk)
     elif request.method == 'DELETE':
         return __delete_post(request, pk)
     else:
@@ -51,6 +50,40 @@ def __get_post(request, pk):
     }
 
     return render(request, 'detail.html', ctx)
+
+
+def __update_post(request, pk):
+    title = request.PUT.get('title')
+    content = request.PUT.get('content')
+    category_pk = request.PUT.get('category')
+    status = request.PUT.get('status')
+    tags = request.PUT.get('tags')
+    if tags:
+        tags = request.PUT.get('tags').split(',')
+
+    post = get_object_or_404(Post, pk=pk)
+    post.title = title
+    post.content = content
+    if category_pk:
+        post.category = Category.objects.get(pk=category_pk)
+    post.status = status
+    post.save()
+    if tags:
+        for name in tags:
+            name = name.strip()
+            if name:
+                try:
+                    tag = Tag.objects.get(name=name)
+                except Tag.DoesNotExist:
+                    tag = Tag()
+                    tag.name = name
+                    tag.save()
+                post.tags.add(tag)
+            post.save()
+
+    response = HttpResponse()
+    response.status_code = 200
+    return response
 
 
 def __delete_post(request, pk):
@@ -119,4 +152,25 @@ def __create_form(request):
         'status_choices': status_choices,
     }
 
-    return render(request, 'edit.html', ctx)
+    return render(request, 'create.html', ctx)
+
+
+# update_form
+def update_form(request, pk):
+    if request.method == 'GET':
+        return __update_form(request, pk)
+    else:
+        raise Http404
+
+
+def __update_form(request, pk):
+    categories = Category.objects.all()
+    post = Post.objects.get(pk=pk)
+    status_choices = post.get_status_choices()
+    ctx = {
+        'post': post,
+        'categories': categories,
+        'status_choices': status_choices,
+    }
+
+    return render(request, 'update.html', ctx)

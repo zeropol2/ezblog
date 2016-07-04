@@ -1,0 +1,53 @@
+<p>
+    <div class="form-group">
+        <input class="form-control" name="title" type="text"
+                placeholder="글 제목"
+                {% if post %}
+                    value="{{ post.title }}"
+                {% endif %}
+                required=""/>
+    </div>
+</p>
+
+<hr />
+
+<p>
+    <textarea name="content" data-provide="markdown" rows="10" placeholder="마크다운으로 작성해주세요.">{% if post %}{{ post.content }}{% endif %}</textarea>
+</p>
+
+<hr />
+
+<p>
+    <select class="form-control" name="category">
+        <option value>카테고리 없음</option>
+        {% for category in categories %}
+        <option value="{{ category.pk }}"
+            {% if post and post.category == category %} selected= "selcted" {% endif %}>
+            {{ category.name }}
+        </option>
+        {% endfor %}
+    </select>
+</p>
+
+<hr />
+
+<p>
+    <input class="form-control" name="tags" type="text"
+           placeholder="태그는 ,으로 구분해 주세요."
+            {% if post and post.tags.exists %}
+                value=
+                "{% for tag in post.tags.all %}{{ tag.name }},{% endfor %}"
+            {% endif %}/>
+</p>
+
+<hr />
+
+<p>
+    <select class="form-control" name="status">
+        {% for item in status_choices %}
+        <option value="{{ item.0 }}">{{ item.1 }}</option>
+        {% endfor %}
+    </select>
+</p>
+
+<hr />
