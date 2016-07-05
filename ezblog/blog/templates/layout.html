@@ -1,21 +1,58 @@
 {% load bootstrap3 %}
+{% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <title>{% block page_title %}내 블로그{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    {% block javascript %}
-    {% endblock %}
-
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/ezblog.css' %}">
+    {% block javascript %}
+    {% endblock %}
 </head>
 
-<body class="container">
+<body class="container-fluid">
 
-    {% block body %}
-    {% endblock %}
+<div class="row">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+        <a class="navbar-brand" href="{% url 'blog:index' %}">전설의 개발자를 꿈꾸며</a>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.user.is_authenticated %}
+                <li><a class="nav navbar-nav navbar-right" href="{% url 'blog:create_post_form' %}">새 글 쓰기</a></li>
+                <li><a class="nav navbar-nav navbar-right" href="#">로그아웃</a></li>
+                {% endif %}
+                <li>
+                    <form class="navbar-form" role="search">
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i
+                                        class="glyphicon glyphicon-search"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </form>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+
+</div>
+{% block body %}
+{% endblock %}
 
 </body>
 

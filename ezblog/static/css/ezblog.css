@@ -1,0 +1,18 @@
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: auto;
+}
+.navbar-toggle {
+    z-index:3;
+}
+
+.navbar-nav.navbar-right{
+   padding-right:10px;
+}
+
+
+body { padding-top: 70px; }
