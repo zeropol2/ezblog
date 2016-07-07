@@ -26,6 +26,7 @@ def index(request):
 
     ctx = {
         'posts': contents,
+        'categories': Category.objects.all()
     }
 
     return render(request, 'index.html', ctx)

@@ -1,18 +1,51 @@
+
+/* Styles go here */
+body {
+    padding-top: 51px;
+}
+
+
+.page-header {
+    margin: 20px 0 5px;
+}
+
+/* navbar */
+.navbar-black {
+    background-color: #0F0F0F;
+}
+
+.navbar-black
 .navbar-brand {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    text-align: center;
-    margin: auto;
-}
-.navbar-toggle {
-    z-index:3;
+    color: #A9A9A9;
 }
 
-.navbar-nav.navbar-right{
-   padding-right:10px;
+/* this is only to style the sidebar - you can make the sidebar look any way you want */
+.sidebar {
+    background-color: #F9F9F9;
+    border-right: 1px solid #eee;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
+.sidebar-title {
+    position: relative;
+    display: block;
+    padding: 5px 15px;
+}
 
-body { padding-top: 70px; }
+a.sidebar-item {
+    position: relative;
+    display: block;
+    padding: 5px 15px;
+}
+
+.sidebar-divider {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.sidebar-search {
+    position: relative;
+    display: block;
+    padding: 5px 15px;
+}
