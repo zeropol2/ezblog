@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -6,6 +7,7 @@ class Post(models.Model):
         ('public', '공개',),
         ('private', '비공개',),
     )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=200, null=False, blank=False)
     content = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)

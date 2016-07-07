@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
@@ -52,6 +53,7 @@ def __get_post(request, pk):
     return render(request, 'detail_post.html', ctx)
 
 
+@login_required
 def __update_post(request, pk):
     title = request.PUT.get('title')
     content = request.PUT.get('content')
@@ -86,6 +88,7 @@ def __update_post(request, pk):
     return response
 
 
+@login_required
 def __delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
@@ -95,6 +98,7 @@ def __delete_post(request, pk):
 
 
 # create_post
+@login_required
 def create_post(request):
     if request.method == 'POST':
         return __create_post(request)
@@ -102,6 +106,7 @@ def create_post(request):
         raise Http404
 
 
+@login_required
 def __create_post(request):
     title = request.POST.get('title')
     content = request.POST.get('content')
@@ -136,6 +141,7 @@ def __create_post(request):
 
 
 # create_post_form
+@login_required
 def create_post_form(request):
     if request.method == 'GET':
         return __create_post_form(request)
@@ -143,6 +149,7 @@ def create_post_form(request):
         raise Http404
 
 
+@login_required
 def __create_post_form(request):
     categories = Category.objects.all()
     post = Post()
@@ -156,6 +163,7 @@ def __create_post_form(request):
 
 
 # update_post_form
+@login_required
 def update_post_form(request, pk):
     if request.method == 'GET':
         return __update_post_form(request, pk)
@@ -163,6 +171,7 @@ def update_post_form(request, pk):
         raise Http404
 
 
+@login_required
 def __update_post_form(request, pk):
     categories = Category.objects.all()
     post = Post.objects.get(pk=pk)
