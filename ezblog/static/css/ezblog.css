@@ -9,6 +9,16 @@ body {
     margin: 20px 0 5px;
 }
 
+.pagination {
+    display: block;
+    text-align: center;
+}
+
+.pagination > li > a {
+    float: none;
+    margin-left: -5px;
+}
+
 /* navbar */
 .navbar-black {
     background-color: #0F0F0F;
