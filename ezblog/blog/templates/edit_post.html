@@ -2,15 +2,17 @@
 {% load static from staticfiles %}
 {% block page_title %} {{ post.title }} 게시물 편집 {% endblock %}
 
-{% block javascript %}
+{% block css %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/to-markdown/3.0.0/to-markdown.min.js"></script>
-
     <!--parsley 2.4.3-->
     <link href="{% static 'css/parsley.css' %}" rel="stylesheet">
-    <script src="{% static 'js/parsley.min.js' %}"></script>
-    <script src="{% static 'js/ezblog.js' %}"></script>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/to-markdown/3.0.0/to-markdown.min.js"></script>
+<script src="{% static 'js/parsley.min.js' %}"></script>
+<script src="{% static 'js/ezblog.js' %}"></script>
 {% endblock %}

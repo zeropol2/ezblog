@@ -8,11 +8,7 @@
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
     <link rel="stylesheet" href="{% static 'css/ezblog.css' %}">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    {% bootstrap_javascript %}
-    <script src="{% static 'js/sidebar.js' %}"></script>
-    {% block javascript %}
+    {% block css %}
     {% endblock %}
 </head>
 
@@ -30,6 +26,12 @@
 
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+{% bootstrap_javascript %}
+<script src="{% static 'js/sidebar.js' %}"></script>
+{% block javascript %}
+{% endblock %}
 
 </body>
 

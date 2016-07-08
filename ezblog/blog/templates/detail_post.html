@@ -2,43 +2,71 @@
 {% load static from staticfiles %}
 {% block page_title %} {{ post.title }} - 게시물 보기 {% endblock %}
 
-{% block javascript %}
-    <script src="{% static 'js/ezblog.js' %}"></script>
+{% block body %}
+{% include 'part_detail_post.html' %}
+
+<p>
+<div id="disqus_thread"></div>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript>
+</p>
+
+<p>
+<div>
+    {% if request.user.is_authenticated and request.user == post.user %}
+    <a href="{% url 'blog:post' pk=post.pk %}" data-next-to="{% url 'blog:index' %}"
+       data-target="#delete-comfirm-modal" class="delete-post btn btn-danger">글 삭제</a>
+    <a href="{% url 'blog:update_post_form' pk=post.pk %}" class="btn btn-success">글 수정</a>
+    {% endif %}
+    <a href="{% url 'blog:index' %}" class="btn btn-default">글 목록</a>
+</div>
+</p>
+
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="delete-comfirm-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">정말로 삭제하시겠습니까</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{ post.title }} 이(가) 삭제됩니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                <button type="button" class="btn-modal-submit btn btn-danger">확인</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 {% endblock %}
 
-{% block body %}
-    {% include 'part_detail_post.html' %}
-    <p>
-        <div>
-            {% if request.user.is_authenticated and request.user == post.user %}
-                <a href="{% url 'blog:post' pk=post.pk %}" data-next-to="{% url 'blog:index' %}"
-                   data-target="#delete-comfirm-modal" class="delete-post btn btn-danger">글 삭제</a>
-                <a href="{% url 'blog:update_post_form' pk=post.pk %}" class="btn btn-success">글 수정</a>
-            {% endif %}
-            <a href="{% url 'blog:index' %}" class="btn btn-default">글 목록</a>
-        </div>
-    </p>
+{% block javascript %}
+<script src="{% static 'js/ezblog.js' %}"></script>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
 
+        s.src = '//zeropol2.disqus.com/embed.js';
 
-    <!-- Modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="delete-comfirm-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">정말로 삭제하시겠습니까</h4>
-                </div>
-                <div class="modal-body">
-                    <p>{{ post.title }} 이(가) 삭제됩니다.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn-modal-submit btn btn-danger">확인</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script id="dsq-count-scr" src="//zeropol2.disqus.com/count.js" async></script>
 {% endblock %}
 
