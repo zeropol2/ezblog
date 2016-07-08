@@ -5,8 +5,8 @@
         <p>
             {% include 'edit_form.html' %}
             <div class="text-right">
-                <a href="{% url 'blog:posts' pk=post.pk %}" class="update-post btn btn-primary"
-                    data-next-to="{% url 'blog:posts' pk=post.pk %}">저장</a>
+                <a href="{% url 'blog:post' pk=post.pk %}" class="update-post btn btn-primary"
+                    data-next-to="{% url 'blog:post' pk=post.pk %}">저장</a>
             </div>
         </p>
     </form>

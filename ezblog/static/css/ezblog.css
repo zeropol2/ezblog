@@ -2,6 +2,7 @@
 /* Styles go here */
 body {
     padding-top: 51px;
+    font-size: 16px;
 }
 
 
@@ -29,12 +30,26 @@ body {
     color: #A9A9A9;
 }
 
+.text-divider {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    margin: 0 5px;
+    background-color: #ebebeb;
+}
+
+.post-title {
+    font-size: 30px;
+}
+
+
 /* this is only to style the sidebar - you can make the sidebar look any way you want */
 .sidebar {
     background-color: #F9F9F9;
     border-right: 1px solid #eee;
     padding-left: 0px;
     padding-right: 0px;
+    font-size: 14px;
 }
 
 .sidebar-title {

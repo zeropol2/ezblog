@@ -12,7 +12,7 @@
     <p>
         <div>
             {% if request.user.is_authenticated and request.user == post.user %}
-                <a href="{% url 'blog:posts' pk=post.pk %}" data-next-to="{% url 'blog:index' %}"
+                <a href="{% url 'blog:post' pk=post.pk %}" data-next-to="{% url 'blog:index' %}"
                    data-target="#delete-comfirm-modal" class="delete-post btn btn-danger">글 삭제</a>
                 <a href="{% url 'blog:update_post_form' pk=post.pk %}" class="btn btn-success">글 수정</a>
             {% endif %}

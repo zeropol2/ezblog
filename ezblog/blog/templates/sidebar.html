@@ -10,7 +10,7 @@
         <li><span class="sidebar-title"><strong>카테고리</strong></span></li>
         {% for category in categories %}
         <li>
-            <a class="sidebar-item" href="#">{{ category.name }}</a>
+            <a class="sidebar-item" href="{% url 'blog:posts_by_category' category_pk=category.pk %}">{{ category.name }}</a>
         </li>
         {% endfor %}
         <hr class="sidebar-divider"/>

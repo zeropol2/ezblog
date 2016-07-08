@@ -9,31 +9,22 @@ from .models import Post, Category, Tag
 
 # index
 def index(request):
-    per_page = 2
-    page = request.GET.get('page', 1)
+    if request.method == 'GET':
+        per_page = 2
+        page = request.GET.get('page', 1)
 
-    if request.user.is_authenticated():
-        pg = Paginator(Post.objects.all(), per_page)
+        if request.user.is_authenticated():
+            pg = Paginator(Post.objects.all(), per_page)
+        else:
+            pg = Paginator(Post.objects.filter(status='public'), per_page)
+
+        return __render_index(request, pg, page)
     else:
-        pg = Paginator(Post.objects.filter(status='public'), per_page)
-
-    try:
-        contents = pg.page(page)
-    except PageNotAnInteger:
-        contents = pg.page(1)
-    except EmptyPage:
-        contents = []
-
-    ctx = {
-        'posts': contents,
-        'categories': Category.objects.all()
-    }
-
-    return render(request, 'index.html', ctx)
+        raise Http404
 
 
 # posts
-def posts(request, pk):
+def post(request, pk):
     if request.method == 'GET':
         return __get_post(request, pk)
     elif request.method == 'PUT':
@@ -49,6 +40,7 @@ def __get_post(request, pk):
 
     ctx = {
         'post': post,
+        'categories': Category.objects.all()
     }
 
     return render(request, 'detail_post.html', ctx)
@@ -99,10 +91,11 @@ def __delete_post(request, pk):
 
 
 # create_post
-@login_required
-def create_post(request):
+def create_post_or_list_posts(request):
     if request.method == 'POST':
         return __create_post(request)
+    elif request.method == 'GET':
+        return index(request)
     else:
         raise Http404
 
@@ -138,7 +131,7 @@ def __create_post(request):
                 new_post.tags.add(tag)
         new_post.save()
 
-    url = reverse('blog:posts', kwargs={'pk': new_post.pk})
+    url = reverse('blog:post', kwargs={'pk': new_post.pk})
     return redirect(url)
 
 
@@ -159,6 +152,7 @@ def __create_post_form(request):
     ctx = {
         'categories': categories,
         'status_choices': status_choices,
+        'categories': Category.objects.all()
     }
 
     return render(request, 'create_post.html', ctx)
@@ -182,6 +176,58 @@ def __update_post_form(request, pk):
         'post': post,
         'categories': categories,
         'status_choices': status_choices,
+        'categories': Category.objects.all()
     }
 
     return render(request, 'update_post.html', ctx)
+
+
+# list
+def posts_by_tag(request, tag_pk):
+    if request.method == 'GET':
+        per_page = 15
+        page = request.GET.get('page', 1)
+
+        target_tag = Tag.objects.get(pk=tag_pk)
+
+        if request.user.is_authenticated():
+            pg = Paginator(Post.objects.filter(tags__in=[target_tag]), per_page)
+        else:
+            pg = Paginator(Post.objects.filter(status='public', tags__in=[target_tag]), per_page)
+
+        return __render_index(request, pg, page)
+    else:
+        raise Http404
+
+
+def posts_by_category(request, category_pk):
+    if request.method == 'GET':
+        per_page = 15
+        page = request.GET.get('page', 1)
+
+        target_category = Category.objects.get(pk=category_pk)
+
+        if request.user.is_authenticated():
+            pg = Paginator(Post.objects.filter(category=target_category), per_page)
+        else:
+            pg = Paginator(Post.objects.filter(status='public', category=target_category), per_page)
+
+        return __render_index(request, pg, page)
+    else:
+        raise Http404
+
+
+def __render_index(request, pg, page):
+    try:
+        contents = pg.page(page)
+    except PageNotAnInteger:
+        contents = pg.page(1)
+    except EmptyPage:
+        contents = []
+
+    ctx = {
+        'posts': contents,
+        'categories': Category.objects.all()
+    }
+
+    return render(request, 'index.html', ctx)
