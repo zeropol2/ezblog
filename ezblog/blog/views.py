@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -211,6 +212,22 @@ def posts_by_category(request, category_pk):
             pg = Paginator(Post.objects.filter(category=target_category), per_page)
         else:
             pg = Paginator(Post.objects.filter(status='public', category=target_category), per_page)
+
+        return __render_index(request, pg, page)
+    else:
+        raise Http404
+
+
+def posts_by_keyword(request):
+    if request.method == 'GET':
+        per_page = 15
+        page = request.GET.get('page', 1)
+        keyword = request.GET.get('keyword')
+
+        if request.user.is_authenticated():
+            pg = Paginator(Post.objects.filter((Q(title__contains=keyword) | Q(content__contains=keyword))), per_page)
+        else:
+            pg = Paginator(Post.objects.filter(status='public').filter((Q(title__contains=keyword) | Q(content__contains=keyword))), per_page)
 
         return __render_index(request, pg, page)
     else:
