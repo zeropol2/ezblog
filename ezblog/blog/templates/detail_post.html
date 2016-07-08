@@ -11,7 +11,7 @@
 </p>
 
 <p>
-<div>
+<div class="text-right">
     {% if request.user.is_authenticated and request.user == post.user %}
     <a href="{% url 'blog:post' pk=post.pk %}" data-next-to="{% url 'blog:index' %}"
        data-target="#delete-comfirm-modal" class="delete-post btn btn-danger">글 삭제</a>
