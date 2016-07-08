@@ -186,15 +186,19 @@ def __update_post_form(request, pk):
 # list
 def posts_by_tag(request, tag_pk):
     if request.method == 'GET':
+        target_tag = Tag.objects.get(pk=tag_pk)
+
+        if not target_tag:
+            url = reverse('blog:index')
+            return redirect(url)
+
         per_page = 15
         page = request.GET.get('page', 1)
 
-        target_tag = Tag.objects.get(pk=tag_pk)
-
         if request.user.is_authenticated():
-            pg = Paginator(Post.objects.filter(tags__in=[target_tag]), per_page)
+            pg = Paginator(Post.objects.filter(tags__in=[target_tag]).distinct(), per_page)
         else:
-            pg = Paginator(Post.objects.filter(status='public', tags__in=[target_tag]), per_page)
+            pg = Paginator(Post.objects.filter(status='public', tags__in=[target_tag]).distinct(), per_page)
 
         return __render_index(request, pg, page)
     else:
@@ -203,15 +207,19 @@ def posts_by_tag(request, tag_pk):
 
 def posts_by_category(request, category_pk):
     if request.method == 'GET':
+        target_category = Category.objects.get(pk=category_pk)
+
+        if not target_category:
+            url = reverse('blog:index')
+            return redirect(url)
+
         per_page = 15
         page = request.GET.get('page', 1)
 
-        target_category = Category.objects.get(pk=category_pk)
-
         if request.user.is_authenticated():
-            pg = Paginator(Post.objects.filter(category=target_category), per_page)
+            pg = Paginator(Post.objects.filter(category=target_category).distinct(), per_page)
         else:
-            pg = Paginator(Post.objects.filter(status='public', category=target_category), per_page)
+            pg = Paginator(Post.objects.filter(status='public', category=target_category).distinct(), per_page)
 
         return __render_index(request, pg, page)
     else:
@@ -220,21 +228,35 @@ def posts_by_category(request, category_pk):
 
 def posts_by_keyword(request):
     if request.method == 'GET':
-        per_page = 15
-        page = request.GET.get('page', 1)
         keyword = request.GET.get('keyword')
 
-        if request.user.is_authenticated():
-            pg = Paginator(Post.objects.filter((Q(title__contains=keyword) | Q(content__contains=keyword))), per_page)
-        else:
-            pg = Paginator(Post.objects.filter(status='public').filter((Q(title__contains=keyword) | Q(content__contains=keyword))), per_page)
+        if not keyword:
+            url = reverse('blog:index')
+            return redirect(url)
 
-        return __render_index(request, pg, page)
+        per_page = 15
+        page = request.GET.get('page', 1)
+
+        where_func = Q()
+        for keyword_item in keyword.split(' '):
+            target_tags = Tag.objects.filter(name__contains=keyword_item)
+            target_categories = Category.objects.filter(name__contains=keyword_item)
+            where_func = Q(where_func |
+                           Q(title__contains=keyword_item) |
+                           Q(content__contains=keyword_item) |
+                           Q(tags__in=target_tags) | Q(category__in=target_categories))
+
+        if request.user.is_authenticated():
+            pg = Paginator(Post.objects.filter(where_func).distinct(), per_page)
+        else:
+            pg = Paginator(Post.objects.filter(Q(status='public') & where_func).distinct(), per_page)
+
+        return __render_index(request, pg, page, keyword=keyword)
     else:
         raise Http404
 
 
-def __render_index(request, pg, page):
+def __render_index(request, pg, page, **kwargs):
     try:
         contents = pg.page(page)
     except PageNotAnInteger:
@@ -242,9 +264,12 @@ def __render_index(request, pg, page):
     except EmptyPage:
         contents = []
 
+    print(kwargs)
+
     ctx = {
         'posts': contents,
-        'categories': Category.objects.all()
+        'categories': Category.objects.all(),
+        'keyword': kwargs.get('keyword')
     }
 
     return render(request, 'index.html', ctx)
