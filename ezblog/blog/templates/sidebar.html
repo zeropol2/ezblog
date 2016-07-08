@@ -15,5 +15,15 @@
         {% endfor %}
         <hr class="sidebar-divider"/>
         <li><span class="sidebar-title"><strong>아카이브</strong></span></li>
+
+        <hr class="sidebar-divider"/>
+        <li>
+            {% if request.user.is_authenticated %}
+            <a class="sidebar-item" href="{% url 'logout_url' %}?next={{ request.path }}">로그아웃</a>
+            <a class="sidebar-item" href="{% url 'blog:create_post_form' %}">새 글 쓰기</a>
+            {% else %}
+            <a class="sidebar-item" href="{% url 'login_url' %}?next={{ request.path }}">로그인</a>
+            {% endif %}
+        </li>
     </ul>
 </div>

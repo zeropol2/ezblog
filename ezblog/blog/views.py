@@ -123,6 +123,7 @@ def __create_post(request):
     if category_pk:
         new_post.category = Category.objects.get(pk=category_pk)
     new_post.status = status
+    new_post.user = request.user
     new_post.save()
     if tags:
         for name in tags:
