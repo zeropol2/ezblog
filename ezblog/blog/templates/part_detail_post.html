@@ -22,7 +22,7 @@
     </small>
 </p>
 
-<p>{{ post.content }}</p>
+<p>{{ post.content|render_markdown|safe }}</p>
 
 <p>
 <div>
