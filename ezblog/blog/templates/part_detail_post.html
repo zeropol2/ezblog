@@ -16,9 +16,11 @@
         <strong class="text-success">카테고리 없음</strong>
         {% endif %}
         <span class="text-divider"></span>
-        {{ post.created_at.year }}
-        .{{ post.created_at.month|stringformat:"02d" }}
-        .{{ post.created_at.day|stringformat:"02d" }}
+        <span class="post-date">
+        {{ post.created_at.year }}.
+        {{ post.created_at.month|stringformat:"02d" }}.
+        {{ post.created_at.day|stringformat:"02d" }}
+        </span>
     </small>
 </p>
 
