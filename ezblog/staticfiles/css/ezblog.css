@@ -1,0 +1,82 @@
+
+/* Styles go here */
+body {
+    padding-top: 51px;
+    font-size: 16px;
+}
+
+
+.page-header {
+    margin: 20px 0 5px;
+}
+
+.pagination {
+    display: block;
+    text-align: center;
+}
+
+.pagination > li > a {
+    float: none;
+    margin-left: -5px;
+}
+
+/* navbar */
+.navbar-black {
+    background-color: #0F0F0F;
+}
+
+.navbar-black
+.navbar-brand {
+    color: #A9A9A9;
+}
+
+.text-divider {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    margin: 0 5px;
+    background-color: #ebebeb;
+}
+
+.post-title {
+    font-size: 30px;
+}
+
+.post-date {
+    color: #888888;
+}
+
+
+/* this is only to style the sidebar - you can make the sidebar look any way you want */
+.sidebar {
+    background-color: #F9F9F9;
+    border-right: 1px solid #eee;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 14px;
+}
+
+.sidebar-title {
+    position: relative;
+    display: block;
+    padding: 5px 15px;
+}
+
+a.sidebar-item {
+    position: relative;
+    display: block;
+    padding: 5px 15px;
+}
+
+.sidebar-divider {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.sidebar-search {
+    position: relative;
+    display: block;
+    padding: 5px 15px;
+}
