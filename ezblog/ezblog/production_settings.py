@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&ivo1n^_bxvz&#!*rq-4!f2d8xsfgb7$_n^63^w^29oeu(2epx'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'ezblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ezblog',
-        'USER': 'ezblog',
-        'PASSWORD': os.environ.get('EZBLOG_DB_PW'),
+        'NAME': 'blog',
+        'USER': 'blog',
+        'PASSWORD': os.environ.get('BLOG_DB_PW'),
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
