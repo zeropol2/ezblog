@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'ezblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog',
+        'NAME': 'blogdb',
         'USER': 'blog',
         'PASSWORD': os.environ.get('BLOG_DB_PW'),
         'HOST': '127.0.0.1',
