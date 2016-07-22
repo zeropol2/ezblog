@@ -11,7 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-env = os.environ.get('EZBLOG_ENV')
+env = os.environ.get('BLOG_ENV')
 if env:
     if not env.endswith('_settings'):
         env = '{}_settings'.format(env)
