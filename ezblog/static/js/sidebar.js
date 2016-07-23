@@ -110,6 +110,8 @@
     var option = data ? 'toggle' : $this.data()
 
     $target.sidebar(option)
+
+    this.blur()
   })
 
   $('html').on('click.bs.sidebar.autohide', function(event){
