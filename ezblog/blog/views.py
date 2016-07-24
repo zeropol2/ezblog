@@ -25,7 +25,7 @@ def index(request):
 
 
 # posts
-def post(request, pk):
+def process_post(request, pk):
     if request.method == 'GET':
         return __get_post(request, pk)
     elif request.method == 'PUT':
@@ -41,7 +41,8 @@ def __get_post(request, pk):
 
     ctx = {
         'post': post,
-        'categories': Category.objects.all()
+        'categories': Category.objects.all(),
+        'archives': __get_archives()
     }
 
     return render(request, 'detail_post.html', ctx)
@@ -153,7 +154,7 @@ def __create_post_form(request):
     ctx = {
         'categories': categories,
         'status_choices': status_choices,
-        'categories': Category.objects.all()
+        'archives': __get_archives()
     }
 
     return render(request, 'create_post.html', ctx)
@@ -177,7 +178,7 @@ def __update_post_form(request, pk):
         'post': post,
         'categories': categories,
         'status_choices': status_choices,
-        'categories': Category.objects.all()
+        'archives': __get_archives()
     }
 
     return render(request, 'update_post.html', ctx)
@@ -264,12 +265,23 @@ def __render_index(request, pg, page, **kwargs):
     except EmptyPage:
         contents = []
 
-    print(kwargs)
-
     ctx = {
         'posts': contents,
         'categories': Category.objects.all(),
+        'archives': __get_archives(),
         'keyword': kwargs.get('keyword')
     }
 
     return render(request, 'index.html', ctx)
+
+
+def __get_archives():
+    all_posts = Post.objects.all()
+    result = {}
+
+    for item in all_posts:
+        year = item.created_at.year
+        count = result.get(year, 0)
+        result[year] = count+1
+
+    return result
