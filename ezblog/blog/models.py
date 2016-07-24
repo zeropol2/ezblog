@@ -32,6 +32,9 @@ class Post(models.Model):
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=30, null=False, blank=False)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return '{}: {}'.format(self.pk, self.name)
 
