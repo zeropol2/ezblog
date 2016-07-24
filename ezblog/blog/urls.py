@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^posts/tag/(?P<tag_pk>[0-9]+)/$', views.posts_by_tag, name='posts_by_tag'),
     url(r'^posts/category/(?P<category_pk>[0-9]+)/$', views.posts_by_category, name='posts_by_category'),
     url(r'^posts/keyword/$', views.posts_by_keyword, name='posts_by_keyword'),
+    url(r'^posts/archive/(?P<year>[0-9]+)/$', views.posts_by_year, name='posts_by_year'),
     url(r'^posts/$', views.create_post_or_list_posts, name='create_post_or_list_posts'),
     url(r'^$', views.index, name='index'),
 ]

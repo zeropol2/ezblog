@@ -257,6 +257,25 @@ def posts_by_keyword(request):
         raise Http404
 
 
+def posts_by_year(request, year):
+    if request.method == 'GET':
+        if not year:
+            url = reverse('blog:index')
+            return redirect(url)
+
+        per_page = 15
+        page = request.GET.get('page', 1)
+
+        if request.user.is_authenticated():
+            pg = Paginator(Post.objects.filter(created_at__year=year).distinct(), per_page)
+        else:
+            pg = Paginator(Post.objects.filter(status='public', created_at__year=year).distinct(), per_page)
+
+        return __render_index(request, pg, page)
+    else:
+        raise Http404
+
+
 def __render_index(request, pg, page, **kwargs):
     try:
         contents = pg.page(page)

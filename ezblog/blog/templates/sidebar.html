@@ -19,7 +19,7 @@
         <li><span class="sidebar-title"><strong>아카이브</strong></span></li>
         {% for archive in archives.items %}
         <li>
-            <a class="sidebar-item" href="{% url 'blog:posts_by_category' category_pk=1 %}">{{ archive.0 }} ({{ archive.1 }})</a>
+            <a class="sidebar-item" href="{% url 'blog:posts_by_year' year=archive.0 %}">{{ archive.0 }} ({{ archive.1 }})</a>
         </li>
         {% endfor %}
 
