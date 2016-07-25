@@ -41,8 +41,8 @@ def __get_post(request, pk):
 
     ctx = {
         'post': post,
-        'categories': Category.objects.all(),
-        'archives': __get_archives()
+        'categories': __get_categories(request),
+        'archives': __get_archives(request)
     }
 
     return render(request, 'detail_post.html', ctx)
@@ -148,13 +148,12 @@ def create_post_form(request):
 
 @login_required
 def __create_post_form(request):
-    categories = Category.objects.all()
     post = Post()
     status_choices = post.get_status_choices()
     ctx = {
-        'categories': categories,
+        'categories': __get_categories(request),
         'status_choices': status_choices,
-        'archives': __get_archives()
+        'archives': __get_archives(request)
     }
 
     return render(request, 'create_post.html', ctx)
@@ -171,14 +170,13 @@ def update_post_form(request, pk):
 
 @login_required
 def __update_post_form(request, pk):
-    categories = Category.objects.all()
     post = Post.objects.get(pk=pk)
     status_choices = post.get_status_choices()
     ctx = {
         'post': post,
-        'categories': categories,
+        'categories': __get_categories(request),
         'status_choices': status_choices,
-        'archives': __get_archives()
+        'archives': __get_archives(request)
     }
 
     return render(request, 'update_post.html', ctx)
@@ -286,16 +284,31 @@ def __render_index(request, pg, page, **kwargs):
 
     ctx = {
         'posts': contents,
-        'categories': Category.objects.all(),
-        'archives': __get_archives(),
+        'categories': __get_categories(request),
+        'archives': __get_archives(request),
         'keyword': kwargs.get('keyword')
     }
 
     return render(request, 'index.html', ctx)
 
 
-def __get_archives():
-    all_posts = Post.objects.all()
+def __get_categories(request):
+    categories = Category.objects.all()
+    for category in categories:
+        if request.user.is_authenticated():
+            category.count = Post.objects.filter(category=category).count()
+        else:
+            category.count = Post.objects.filter(category=category, status='public').count()
+
+    return categories
+
+
+def __get_archives(request):
+    if request.user.is_authenticated():
+        all_posts = Post.objects.all()
+    else:
+        all_posts = Post.objects.filter(status='public')
+
     result = {}
 
     for item in all_posts:

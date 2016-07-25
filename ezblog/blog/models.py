@@ -31,6 +31,7 @@ class Post(models.Model):
 
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=30, null=False, blank=False)
+    count = 0;
 
     class Meta:
         ordering = ['name']
